@@ -17,7 +17,7 @@ def load_s16_image(file, w, h, bit_width):
 		data = f.read()
 		data = struct.unpack('<'+str(int(len(data)/ 2))+'h', data)
 	raw = np.array(data).reshape(h, w)
-	raw = (raw + 32768)
+	raw = abs(raw)
 	raw = raw / (1<<16) * 256
 	raw = raw.astype('uint8')
 	print(min(raw.ravel()), max(raw.ravel()))
@@ -69,7 +69,7 @@ def demosaic(raw):
 
 
 if __name__ == '__main__' :
-	w = 1920
+	w = 944
 	h = 1024
 	bitwitdh = 12
 	path = r'Y:\nfs\\'
