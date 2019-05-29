@@ -3,6 +3,19 @@ import numpy as np
 import struct
 import cv2 as cv
 
+def load_u8c3_image(file, w, h, bit_width):
+	with open(file, "rb") as f:
+		data = f.read()
+		data = struct.unpack('<'+str(int(len(data)))+'B', data)
+	b = np.array(data[:w*h*3:3]).reshape(h, w)
+	g = np.array(data[1:w*h*3:3]).reshape(h, w)
+	r = np.array(data[2:w*h*3:3]).reshape(h, w)
+	rgb = np.stack([r,g,b], axis=-1)
+	rgb = rgb.astype('uint8')
+
+	return rgb
+	
+	
 def load_u8_image(file, w, h, bit_width):
 	with open(file, "rb") as f:
 		data = f.read()
@@ -18,7 +31,7 @@ def load_s16_image(file, w, h, bit_width):
 		data = struct.unpack('<'+str(int(len(data)/ 2))+'h', data)
 	raw = np.array(data).reshape(h, w)
 	raw = abs(raw)
-	raw = raw / (1<<16) * 256
+	raw = raw / (1<<(bit_width - 1)) * 256
 	raw = raw.astype('uint8')
 	print(min(raw.ravel()), max(raw.ravel()))
 	return raw
@@ -29,7 +42,7 @@ def load_raw_image(file, w, h, bit_width):
 		data = struct.unpack('<'+str(int(len(data)/ 2))+'H', data)
 	raw = np.array(data).reshape(h, w)
 	print(max(raw.ravel()))
-	raw = raw / (1<<bitwitdh) * 256
+	raw = raw / (1<<bit_width) * 256
 	raw = raw.astype('uint8')
 	#print(max(raw.ravel()))
 	return raw
@@ -69,8 +82,8 @@ def demosaic(raw):
 
 
 if __name__ == '__main__' :
-	w = 944
-	h = 1024
+	w = 448
+	h = 784
 	bitwitdh = 12
 	path = r'Y:\nfs\\'
 	file = 'src'
@@ -83,28 +96,38 @@ if __name__ == '__main__' :
 	#imsave(path+file+'.jpg', rgb)
 	#imshow(rgb)
 	
-	raw = load_u8_image(path + 'src' + suffix, w, h, bitwitdh)
+	raw = load_u8_image(path + 'src' + suffix, w, h, 8)
 	figure(1)
 	imshow(raw, cmap='gray')
-	
-	raw = load_u8_image(path + 'dst' + suffix, w, h, bitwitdh)
+	rgb = np.stack([raw,raw,raw], axis=-1)
+	imsave(path+'src'+'.jpg', rgb)
+	'''
+	raw = load_u8_image(path + 'dst' + suffix, w, h, 8)
 	figure(2)
 	imshow(raw, cmap='gray')
 	
-	raw = load_s16_image(path + 'srcH' + suffix, w, h, bitwitdh)
+	raw = load_s16_image(path + 'srcH' + suffix, w, h, 16)
 	figure(3)
 	imshow(raw, cmap='gray')
 	
-	raw = load_s16_image(path + 'dstH' + suffix, w, h, bitwitdh)
+	raw = load_s16_image(path + 'dstH' + suffix, w, h, 16)
 	figure(4)
 	imshow(raw, cmap='gray')
 	
-	raw = load_s16_image(path + 'srcV' + suffix, w, h, bitwitdh)
+	raw = load_s16_image(path + 'srcV' + suffix, w, h, 16)
 	figure(5)
 	imshow(raw, cmap='gray')
 	
-	raw = load_s16_image(path + 'dstV' + suffix, w, h, bitwitdh)
+	raw = load_s16_image(path + 'dstV' + suffix, w, h, 16)
 	figure(6)
 	imshow(raw, cmap='gray')
+	'''
+	raw = load_u8_image(path + 'edge' + suffix, w, h, 8)
+	figure(7)
+	imshow(raw, cmap='gray')
+	
+	raw = load_u8c3_image(path + 'rgb' + suffix, w, h, 8)
+	figure(8)
+	imshow(raw)
 	
 	show()
