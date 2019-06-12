@@ -8,7 +8,7 @@ def load_yuv(file, w, h, type):
 	with open(file, "rb") as f:
 		data = f.read()
 		data = struct.unpack('<'+str(int(len(data)))+'B', data)
-
+	print(min(data), max(data))
 	if type == '444p':
 		y = np.array(data[:w*h:]).reshape(h, w).astype(np.uint8)
 		u = np.array(data[w*h:w*h*2:]).reshape(h, w).astype(np.uint8)
@@ -45,10 +45,10 @@ def save_yuv(filename, data):
 
 
 if __name__ == '__main__':
-	width = 4096
-	height = 2160
+	width = 2160
+	height = 4096
 	path = r'C:\Users\lujy.HVTEAM\Desktop\\'
-	file = 'vpss_grp0_chn0_4096x2160_P420_1'
+	file = 'HisiYUV_2160x4096_8bits_420sp_linear_20190605132624'
 	suffix = '.yuv'
 
 	yuv = load_yuv(path + file + suffix, width ,height, 'yv12')

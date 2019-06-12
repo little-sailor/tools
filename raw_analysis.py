@@ -82,8 +82,8 @@ def demosaic(raw):
 
 
 if __name__ == '__main__' :
-	w = 448
-	h = 784
+	w = 1920
+	h = 1024
 	bitwitdh = 12
 	path = r'Y:\nfs\\'
 	file = 'src'
