@@ -101,19 +101,15 @@ if __name__ == '__main__' :
 	imshow(raw, cmap='gray')
 	rgb = np.stack([raw,raw,raw], axis=-1)
 	imsave(path+'src'+'.jpg', rgb)
-	'''
-	raw = load_u8_image(path + 'dst' + suffix, w, h, 8)
-	figure(2)
-	imshow(raw, cmap='gray')
 	
-	raw = load_s16_image(path + 'srcH' + suffix, w, h, 16)
+	raw = load_s16_image(path + 'gh' + suffix, w, h, 16)
 	figure(3)
 	imshow(raw, cmap='gray')
 	
-	raw = load_s16_image(path + 'dstH' + suffix, w, h, 16)
+	raw = load_s16_image(path + 'gv' + suffix, w, h, 16)
 	figure(4)
 	imshow(raw, cmap='gray')
-	
+	'''
 	raw = load_s16_image(path + 'srcV' + suffix, w, h, 16)
 	figure(5)
 	imshow(raw, cmap='gray')
@@ -121,7 +117,7 @@ if __name__ == '__main__' :
 	raw = load_s16_image(path + 'dstV' + suffix, w, h, 16)
 	figure(6)
 	imshow(raw, cmap='gray')
-	'''
+	
 	raw = load_u8_image(path + 'edge' + suffix, w, h, 8)
 	figure(7)
 	imshow(raw, cmap='gray')
@@ -129,5 +125,5 @@ if __name__ == '__main__' :
 	raw = load_u8c3_image(path + 'rgb' + suffix, w, h, 8)
 	figure(8)
 	imshow(raw)
-	
+	'''
 	show()
