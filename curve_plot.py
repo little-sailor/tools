@@ -2,7 +2,7 @@
 def load_value(file, key):
     import re
     v = []
-    with open(file, 'r', encoding='UTF-8') as f:
+    with open(file, 'r', encoding='GB2312') as f:
         for l in f:
             t = re.findall(r'(?<=' + key + r')\d+', l)
             if t:
@@ -13,7 +13,7 @@ def load_value(file, key):
 def load_line_value(file, line_key, key):
     import re
     v = []
-    with open(file, 'r', encoding='UTF-8') as f:
+    with open(file, 'r', encoding='GB2312') as f:
         for l in f:
             if line_key in l:
                 t = re.findall(r'(?<=' + key + r')\d+', l)
@@ -35,12 +35,12 @@ def load_curve(file):
 if __name__ == '__main__' :
     from matplotlib.pyplot import figure, show, plot
     path = r'E:\log\\'
-    file = '172.18.18.242_061500'
+    file = '10.34.17.125_23_20190707000000'
     suffix = '.log'
 
-    lumI = load_line_value(path + file + suffix, r'IspDev = [0]', r'AveLumI = \[')
-    lum = load_line_value(path + file + suffix, r'IspDev = [0]', r'AveLum = \[')
-    TH = load_line_value(path + file +suffix, r'IspDev = [0]', r'TH = \[')
+    lumI = load_line_value(path + file + suffix, r'IspDev = [1]', r'AveLumI = \[')
+    lum = load_line_value(path + file + suffix, r'IspDev = [1]', r'AveLum = \[')
+    TH = load_line_value(path + file +suffix, r'IspDev = [1]', r'TH = \[')
     figure(1)
     plot(lum)
     plot(lumI, 'r')
