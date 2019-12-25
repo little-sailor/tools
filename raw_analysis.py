@@ -53,7 +53,7 @@ def wb(raw):
 	gb = raw[::2, 1::2]
 	gr = raw[1::2, ::2]
 	r = raw[1::2, 1::2]
-	'''
+	
 	figure(1)
 	subplot(2,2,1)
 	imshow(b, cmap= 'gray')
@@ -63,7 +63,7 @@ def wb(raw):
 	imshow(gr, cmap= 'gray')
 	subplot(2,2,4)
 	imshow(r, cmap= 'gray')
-	'''
+	
 	r2g = sum(r.ravel()) / ((sum(gr.ravel()) + sum(gb.ravel())) / 2)
 	b2g = sum(b.ravel()) / ((sum(gr.ravel()) + sum(gb.ravel())) / 2)
 
@@ -77,24 +77,25 @@ def wb(raw):
 
 
 def demosaic(raw):
-	rgb = cv.cvtColor(raw, cv.COLOR_BayerGB2RGB)
+	rgb = cv.cvtColor(raw, cv.COLOR_BayerGR2RGB)
 	return rgb
 
 
 if __name__ == '__main__' :
-	w = 1920
-	h = 1080
-	bitwitdh = 12
-	path = r'C:\Users\lujy.HVTEAM\Desktop\\'
-	file = 'HisiRAW_1920x1080_12bits_GRBG_Linear_Route0_20190718110338'
+	w = 2048
+	h = 1536
+	bitwitdh = 10
+	path = r'e:\raw\\'
+	file = 'HisiRAW_2048x1536_10bits_GBRG_Linear_Route0_20191220141521'
 	suffix = '.raw'
 
 	raw = load_raw_image(path + file + suffix, w, h, bitwitdh)
-	# raw = wb(raw)
-	# rgb = demosaic(raw)
+	raw = wb(raw)
+	rgb = demosaic(raw)
 
-	imshow(raw, cmap='gray')
+	figure(2)
+	imshow(rgb, cmap='gray')
 	
 	show()
 	
-	imsave(path + file + '.jpg', raw)
+	imsave(path + file + '.jpg', rgb)

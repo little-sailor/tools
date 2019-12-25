@@ -45,10 +45,10 @@ def save_yuv(filename, data):
 
 
 if __name__ == '__main__':
-	width = 2160
-	height = 4096
+	width = 8192
+	height = 6380
 	path = r'C:\Users\lujy.HVTEAM\Desktop\\'
-	file = 'HisiYUV_2160x4096_8bits_420sp_linear_20190605132624'
+	file = 'HisiYUV_8192x6380_8bits_420sp_linear_20191023160023'
 	suffix = '.yuv'
 
 	yuv = load_yuv(path + file + suffix, width ,height, 'yv12')
