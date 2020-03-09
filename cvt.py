@@ -32,7 +32,8 @@ def _convert(file, inEnc, outEnc):
     except IOError as err:
         print("I/O error: {0}".format(err))
 
-def convert(path, fileType, dstEnc='UTF-8'):
+
+def convert(path, fileType='c', dstEnc='UTF-8'):
     import chardet
     suffixDict = {
         'c':(r'.cc', r'.h', r'.cpp', r'.c'),
@@ -49,7 +50,7 @@ def convert(path, fileType, dstEnc='UTF-8'):
 
 
 def showHelp():
-    print('Usage: cvt -o [dst_encode] -t [source type] --path=[source path]')
+    print('Usage: cvt -o [dst_encode=UTF-8] -t [source type=c] --path=[source path]')
     print('source type:')
     print('c: c/c++ files')
     print('py：python files')
@@ -58,7 +59,6 @@ def showHelp():
 
 
 if __name__ == '__main__':
-    import chardet
     import sys
     import getopt
     
@@ -71,7 +71,7 @@ if __name__ == '__main__':
     
     path=''
     dstEnc = 'UTF-8'
-    fileType=''
+    fileType='c'
     
     for opt, arg in opts:
         if opt in ('-h', '--help'):
