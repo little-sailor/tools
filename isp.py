@@ -17,11 +17,12 @@ class RawInfo():
 
 
 class ISPParameter():
-    def __init__(self, bayerNRStrength, gammaRaw, sharpenStrength, gammaRGB):
+    def __init__(self, bayerNRStrength, gammaRaw, sharpenStrength, gammaRGB, saturation):
         self.bayerNRStrength = bayerNRStrength
         self.gammaRaw = gammaRaw
         self.sharpenStrength = sharpenStrength
         self.gammaRGB = gammaRGB
+        self.saturation = saturation
 
 
 class Region():
@@ -99,17 +100,10 @@ class ISP():
             r0 = raw[1::2, ::2]
             gr0 = raw[1::2, 1::2]
 
-        '''
-        figure(1)
-        subplot(2,2,1)
-        imshow(b, cmap= 'gray')
-        subplot(2,2,2)
-        imshow(gb, cmap= 'gray')
-        subplot(2,2,3)
-        imshow(gr, cmap= 'gray')
-        subplot(2,2,4)
-        imshow(r, cmap= 'gray')
-        '''
+        self.r0 = r0
+        self.b0 = b0
+        self.gr0 = gr0
+        self.gb0 = gb0
 
         r2g = sum(r.ravel()) / ((sum(gr.ravel()) + sum(gb.ravel())) / 2)
         b2g = sum(b.ravel()) / ((sum(gr.ravel()) + sum(gb.ravel())) / 2)
@@ -214,15 +208,18 @@ class ISP():
         return img
 
     def _rgb2yuv(self, img):
+        s = self.parameters.saturation
         yuv = cv.cvtColor(img, cv.COLOR_RGB2YCrCb)
-        # yuv[:, :, 1] = (yuv[:, :, 1] - 128) / 128 * s
-        # yuv[:, :, 2] = (yuv[:, :, 2] - 128) / 128 * s
-        #
-        # yuv[:, :, 1] = np.clip(yuv[:, :, 1], -1, 1).astype('float32')
-        # yuv[:, :, 2] = np.clip(yuv[:, :, 2], -1, 1).astype('float32')
-        #
-        # yuv[:, :, 1] = np.clip(yuv[:, :, 1] * 128 + 128, 0 , 255).astype('uint8')
-        # yuv[:, :, 2] = np.clip(yuv[:, :, 2] * 128 + 128, 0 , 255).astype('uint8')
+
+        yuv = yuv.astype('float32')
+
+        yuv[:, :, 1] = np.clip((yuv[:, :, 1] - 128.0) / 255.0 * s, -0.5, 0.5)
+        yuv[:, :, 2] = np.clip((yuv[:, :, 2] - 128.0) / 255.0 * s, -0.5, 0.5)
+
+        yuv[:, :, 1] = np.clip(yuv[:, :, 1] * 255 + 128, 0, 255)
+        yuv[:, :, 2] = np.clip(yuv[:, :, 2] * 255 + 128, 0, 255)
+
+        yuv = yuv.astype('uint8')
 
         return yuv
 
@@ -297,7 +294,31 @@ class ISP():
 
         self.resultYUV = img
 
-    def show(self):
+    def show_rgbgrb(self):
+        win_r = 'r'
+        win_gr = 'gr'
+        win_gb = 'gb'
+        win_b = 'b'
+
+        cv.namedWindow(win_r, cv.WINDOW_NORMAL | cv.WINDOW_KEEPRATIO)
+        cv.imshow(win_r, self.r0)
+
+        cv.namedWindow(win_gr, cv.WINDOW_NORMAL | cv.WINDOW_KEEPRATIO)
+        cv.imshow(win_gr, self.gr0)
+
+        cv.namedWindow(win_gb, cv.WINDOW_NORMAL | cv.WINDOW_KEEPRATIO)
+        cv.imshow(win_gb, self.gb0)
+
+        cv.namedWindow(win_b, cv.WINDOW_NORMAL | cv.WINDOW_KEEPRATIO)
+        cv.imshow(win_b, self.b0)
+
+        cv.waitKey(0)
+        cv.destroyWindow(win_r)
+        cv.destroyWindow(win_gr)
+        cv.destroyWindow(win_gb)
+        cv.destroyWindow(win_b)
+
+    def show_final(self):
         win_name = 'result'
 
         self.resultRGB = cv.cvtColor(self.resultYUV, cv.COLOR_YCrCb2RGB)
@@ -315,22 +336,24 @@ if __name__ == '__main__':
     raw1 = RawInfo(r'E:\Raw\\', 'HisiRAW_4096x2160_12bits_RGGB_Linear_Route1_20200316183021', r'.raw',
                    4096, 2160, 12,
                    259, 'rggb')
-    param1 = ISPParameter(1, 1.2, 0.99, 1.2)
+    param1 = ISPParameter(1, 1.2, 0.99, 1.2, 4)
 
     raw2 = RawInfo(r'E:\Raw\xgs8000\\', 'HisiRAW_4096x2160_12bits_RGGB_Linear_Route1_20200318132946_2000', r'.raw',
                    4096, 2160, 12,
                    259, 'rggb')
-    param2 = ISPParameter(1, 1.2, 0.99, 1.2)
+    param2 = ISPParameter(1, 1.2, 0.99, 1.2, 1)
 
     raw3 = RawInfo(r'E:\Raw\\', 'HisiRAW_1920x1080_12bits_RGGB_Linear_Route0_20190816223320', r'.raw',
                    1920, 1080, 12,
                    240, 'rggb')
-    param3 = ISPParameter(1, 1.2, 0.99, 1.5)
+    param3 = ISPParameter(1, 1.2, 0.99, 1.5, 1)
 
-    isp = ISP(raw3, param3)
+    isp = ISP(raw1, param1)
 
     isp.process()
 
-    isp.show()
+    # isp.show_rgbgrb()
+
+    isp.show_final()
 
     isp.save()
