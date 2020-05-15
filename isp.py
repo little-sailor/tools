@@ -234,8 +234,7 @@ class ISP():
             data = struct.unpack('<' + str(int(len(data) / 2)) + 'H', data)
         raw = np.array(data).reshape(self.raw_info.h, self.raw_info.w)
         print(np.max(raw), np.average(raw), np.min(raw))
-        raw = raw / (1 << self.raw_info.bitWidth)
-        return raw.astype('float32')
+        return raw.astype('uint16')
 
     def _getRegion(self, win_name, img):
         region = Region()
@@ -255,14 +254,24 @@ class ISP():
 
         return region
 
+    def save_crop_raw(self):
+        with open(self.raw_info.path + self.raw_info.fileName + '_' + str(self.crop_raw.shape[1]) + 'x' + str(
+                self.crop_raw.shape[0]) + r'.raw', 'wb') as f:
+            f.write(self.crop_raw.ravel())
+
     def process(self):
         img = self._load_raw_image()
 
-        region = self._getRegion('CROP', img)
+        region = self._getRegion('CROP', img / (1 << self.raw_info.bitWidth))
 
         img = img[region.y0:region.y1:, region.x0:region.x1:]
 
+        self.crop_raw = img.copy()
         # raw_dump(img, path + file + '.csv')
+
+        # float32 domain
+        img = img / (1 << self.raw_info.bitWidth)
+        img = img.astype('float32')
 
         img = self._blc(img)
 
@@ -348,7 +357,12 @@ if __name__ == '__main__':
                    240, 'rggb')
     param3 = ISPParameter(1, 1.2, 0.99, 1.5, 1)
 
-    isp = ISP(raw1, param1)
+    raw4 = RawInfo(r'E:\Raw\standard\\', 'colorcheck_602x358', r'.raw',
+                   602, 358, 12,
+                   259, 'rggb')
+    param4 = ISPParameter(1, 1.2, 0.99, 1.5, 4)
+
+    isp = ISP(raw4, param4)
 
     isp.process()
 
@@ -356,4 +370,5 @@ if __name__ == '__main__':
 
     isp.show_final()
 
-    isp.save()
+    # isp.save_crop_raw()
+    # isp.save()
