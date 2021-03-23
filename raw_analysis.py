@@ -1,4 +1,3 @@
-from matplotlib.pyplot import figure, imshow, show, subplot, imsave
 import numpy as np
 import struct
 import cv2 as cv
@@ -16,7 +15,7 @@ def load_u8c3_image(file, w, h, bit_width):
 	return rgb
 	
 	
-def load_u8_image(file, w, h, bit_width):
+def load_u8_image(file, w, h):
 	with open(file, "rb") as f:
 		data = f.read()
 		data = struct.unpack('<'+str(int(len(data)))+'B', data)
@@ -81,21 +80,54 @@ def demosaic(raw):
 	return rgb
 
 
+def unpackraw(raw):
+	width = raw.shape[1]
+	height = raw.shape[0]
+	u = 0
+	r = 0
+	unpacked = np.zeros(raw.shape)
+	for h in range(height):
+		u = 0
+		r = 0
+		while r + 5 < width:
+
+			unpacked[h][u + 0] = raw[h][r + 0] * 4 + (raw[h][r + 4] & 3)
+			unpacked[h][u + 1] = raw[h][r + 1] * 4 + (raw[h][r + 4] & 12) / 4
+			unpacked[h][u + 2] = raw[h][r + 2] * 4 + (raw[h][r + 4] & 48) / 16
+			unpacked[h][u + 3] = raw[h][r + 3] * 4 + (raw[h][r + 4] & 192) / 64
+
+			'''
+			unpacked[h][u + 0] = raw[h][r + 0] + (raw[h][r + 4] & 3) * 256
+			unpacked[h][u + 1] = raw[h][r + 1] + (raw[h][r + 4] & 12) * 256 / 4
+			unpacked[h][u + 2] = raw[h][r + 2] + (raw[h][r + 4] & 48) * 256 / 16
+			unpacked[h][u + 3] = raw[h][r + 3] + (raw[h][r + 4] & 192) * 256 / 64
+			'''
+			'''
+			unpacked[h][u + 0] = raw[h][r + 0]
+			unpacked[h][u + 1] = raw[h][r + 1]
+			unpacked[h][u + 2] = raw[h][r + 2]
+			unpacked[h][u + 3] = raw[h][r + 3]
+			'''
+
+			u = u + 4
+			r = r + 5
+	print(u, r)
+	unpacked = unpacked / 1024 * 255
+	unpacked = unpacked.astype('uint8')
+	return unpacked
+
+
 if __name__ == '__main__' :
-	w = 2048
-	h = 1536
+	w = 2448
+	h = 1096
 	bitwitdh = 10
-	path = r'e:\raw\\'
-	file = 'HisiRAW_2048x1536_10bits_GBRG_Linear_Route0_20191220141521'
+	path = r'C:\Users\lujy\Desktop\\'
+	file = 'sif'
 	suffix = '.raw'
 
-	raw = load_raw_image(path + file + suffix, w, h, bitwitdh)
-	raw = wb(raw)
-	rgb = demosaic(raw)
+	raw = load_u8_image(path + file + suffix, w, h)
+	unpacked_raw = unpackraw(raw)
 
-	figure(2)
-	imshow(rgb, cmap='gray')
-	
-	show()
-	
-	imsave(path + file + '.jpg', rgb)
+	cv.namedWindow("raw", cv.WINDOW_NORMAL | cv.WINDOW_KEEPRATIO)
+	cv.imshow("raw", unpacked_raw)
+	cv.waitKey(0)

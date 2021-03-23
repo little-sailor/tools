@@ -1,0 +1,30 @@
+[user]
+    name = lujy
+    email = lujingyu614@163.com	
+[alias]
+	lg = log --graph --all --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	lgs = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	st = status
+	cm = commit
+	ck = checkout
+	df = difftool
+[core]
+	autocrlf = input
+	filemode = false
+	safecrlf = warn
+[diff]
+    tool = bc3
+[difftool "bc3"]
+    path = d:/Beyond Compare 3/BCompare.exe
+[difftool]	
+	prompt = false
+[merge]
+    tool = bc3
+[mergetool "bc3"]
+    path = d:/Beyond Compare 3/BCompare.exe
+[mergetool]
+	prompt = false
+[gui]
+	recentrepo = Y:/swHi3519/mpp_ipnc
+[credential]
+	helper = manager

@@ -362,7 +362,30 @@ if __name__ == '__main__':
                    259, 'rggb')
     param4 = ISPParameter(1, 1.2, 0.99, 1.5, 4)
 
-    isp = ISP(raw4, param4)
+
+    raw5 = RawInfo(r'D:\rkisp2x_tuner\raw_2020-11-27_15-48-26\result\\', 'frame47232_2592x1944_normal', r'.raw',
+                   2592, 1944, 12,
+                   200, 'rggb')
+    param5 = ISPParameter(1, 1.2, 0.99, 1.5, 4)
+    
+    raw6 = RawInfo(r'E:\Raw\imx334\raw_2021-01-20_12-48-30_old\result\\', 'frame833069_3840x2160_normal', r'.raw',
+                   3840, 2160, 12,
+                   200, 'rggb')
+    param6 = ISPParameter(1, 1.2, 0.99, 1.5, 4)
+
+    raw7 = RawInfo(r'E:\Raw\imx334\raw_2021-01-20_12-48-26_new\result\\', 'frame125823_3840x2160_normal', r'.raw',
+                   3840, 2160, 12,
+                   200, 'rggb')
+                   
+    param7 = ISPParameter(1, 1.2, 0.99, 1.5, 4)
+
+    raw8 = RawInfo(r'E:\vsproject\mcfw_debugger\Debug\record\yuv\\', 'MCFW_0x0_210224142121_147', r'.raw',
+                   3840, 2160, 12,
+                   200, 'rggb')
+
+    param8 = ISPParameter(1, 1.2, 0.99, 1.5, 4)
+
+    isp = ISP(raw8, param8)
 
     isp.process()
 
@@ -371,4 +394,4 @@ if __name__ == '__main__':
     isp.show_final()
 
     # isp.save_crop_raw()
-    # isp.save()
+    isp.save()
