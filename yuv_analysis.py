@@ -61,11 +61,11 @@ def save_yuv(filename, data):
 if __name__ == '__main__':
     width = 1920
     height = 1080
-    path = r'.\\'
-    file = 'capt'
-    suffix = '.raw'
+    path = r'C:\Users\lujy\Desktop\avs\\'
+    file = 'HisiYUV_1920x1080_8bits_420sp_linear_20210721205608'
+    suffix = '.yuv'
 
-    yuv = load_yuv(path + file + suffix, width, height, 'vyuy')
+    yuv = load_yuv(path + file + suffix, width, height, 'nv12')
 
     cv.namedWindow('y', cv.WINDOW_NORMAL | cv.WINDOW_KEEPRATIO)
     cv.imshow('y', yuv2rgb(yuv))

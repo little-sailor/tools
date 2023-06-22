@@ -1,0 +1,123 @@
+{
+    "editor.formatOnSave": true,
+    "[cpp]": {
+        "editor.defaultFormatter": "ms-vscode.cpptools"
+    },
+    "workbench.colorCustomizations": {
+        "[Atom One Light]": {
+            "editor.background": "#CCF2CF",
+            "editor.foreground": "#000000",
+            "sideBar.background": "#CCF2CF",
+            "activityBar.background": "#CCF2CF",
+            "banner.background": "#CCF2CF",
+            "terminal.background": "#CCF2CF",
+            //"activityBar.foreground": "#3b3d3c", //活动栏前景色，图标颜色
+            //"editorBracketMatch.background": "#e4393c", //匹配括号的背景色
+            //"terminal.foreground": "#01cd78",
+            "titleBar.activeBackground": "#CCF2CF", //活动窗口标题栏背景色
+            //"titleBar.activeForeground": "#01cd78", //活动窗口标题栏前景色
+            //"titleBar.border": "#01cd78", //标题栏边框
+            //"titleBar.inactiveBackground": "#000d78", //非活动窗口标题栏背景色
+            //"titleBar.inactiveForeground": "#01cd78", //非活动窗口标题栏前景色
+            //"menubar.selectionBackground": "#4e5172", //菜单栏中选定菜单项的背景色
+            //"menubar.selectionBorder": "#e21d2d", //菜单栏中所选菜单项的虚线边框颜色
+            //"window.activeBorder": "#ff0000", //VScode编辑器边框颜色
+            //"breadcrumb.foreground": "#072bf6",
+            //"editor.lineHighlightBorder": "#f12a0f", //光标所在行边框颜色
+            // 激活选项卡 前景色
+            "tab.activeBackground": "#96faa0", //活动选项卡背景色
+            "tab.inactiveBackground": "#CCF2CF",
+            //"": "#ff0000",
+            //"editor.selectionHighlightBackground": "#01cd78", //与所选内容具有相同内容的区域颜色
+            //"menu.foreground": "#ff0000",
+            //"list.hoverBackground": "#c7ca9c", //鼠标移动时，焦点所在项的背景色
+            //"editorGroupHeader.tabsBorder": "#ff0000",
+            //"editorGroupHeader.border": "#ff0000",
+            //"editorOverviewRuler.selectionHighlightForeground": "#ff0000",
+            //"editorOverviewRuler.wordHighlightForeground": "#ff0000",
+            //"editorOverviewRuler.warningForeground": "#3308f3",
+        },
+    },
+    "editor.tokenColorCustomizations": {
+        "[Atom One Light]": {
+            "textMateRules": [
+                {
+                    "scope": [
+                        "entity.name.type",
+                        "entity.name.type.class",
+                        "source.cpp keyword.operator",
+                        "variable",
+                        "entity.name.namespace.cpp"
+                    ],
+                    "settings": {
+                        "foreground": "#008000",
+                        "fontStyle": "bold",
+                    }
+                },
+                {
+                    "scope": [
+                        "entity.name.function",
+                        "storage",
+                    ],
+                    "settings": {
+                        "foreground": "#000080",
+                        "fontStyle": "bold"
+                    }
+                },
+                {
+                    "scope": [
+                        "keyword.control",
+                        "keyword",
+                        "storage.type",
+                    ],
+                    "settings": {
+                        "foreground": "#800080",
+                        "fontStyle": "bold"
+                    }
+                },
+                {
+                    "scope": "variable.parameter",
+                    "settings": {
+                        "foreground": "#008080",
+                        "fontStyle": "bold"
+                    }
+                },
+                {
+                    "scope": [
+                        "constant.numeric",
+                        "constant"
+                    ],
+                    "settings": {
+                        "foreground": "#FF0000",
+                        "fontStyle": "bold"
+                    }
+                },
+                {
+                    "scope": "string",
+                    "settings": {
+                        "foreground": "#008080",
+                        "fontStyle": "bold"
+                    }
+                },
+                {
+                    "scope": "string.quoted.double punctuation",
+                    "settings": {
+                        "foreground": "#808080",
+                    }
+                }
+            ]
+        },
+        "[Default Dark Modern]": {
+            "textMateRules": []
+        }
+    },
+    "editor.fontSize": 16,
+    "debug.console.fontSize": 16,
+    "markdown.preview.fontSize": 16,
+    "terminal.integrated.fontSize": 16,
+    "workbench.colorTheme": "Atom One Light",
+    // "search.followSymlinks": false,
+    // "editor.fontLigatures": false,
+    // "editor.fontVariations": false,
+    //"editor.fontWeight": "bold"
+}
